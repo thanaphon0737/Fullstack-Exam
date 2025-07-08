@@ -1,5 +1,5 @@
 # Base image
-FROM node:current-alpine
+FROM node
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -12,8 +12,8 @@ RUN npm install
 COPY . .
 
 # Build the application
-RUN npm run build
+# RUN npm run build
 
 # Start the app
-CMD ["node", "dist/main"]
-#  CMD ["npm", "run", "start:dev"]
+# CMD ["node", "dist/main"]
+ CMD ["npm", "run", "start:dev"]
