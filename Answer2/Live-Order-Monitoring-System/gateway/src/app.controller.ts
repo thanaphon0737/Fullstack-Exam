@@ -1,9 +1,9 @@
-import { Controller, Post, Body, UseGuards, Request, Get, Patch,Query, Delete } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get, Patch,Query, Delete,Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AppService } from './app.service';
 import { Roles } from './auth/roles.decorator';
 import { RolesGuard } from './auth/roles.gard';
-
+import { FindAllOrdersDto } from './dto/find-all-order.dto';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -52,29 +52,26 @@ export class AppController {
   @Get('orders')
   @Roles('staff','admin')
   @UseGuards(AuthGuard('jwt'),RolesGuard)
-  getOrder(@Query() query:string){
-    return this.appService.getOrders(query)
+  getOrder(){
+    return this.appService.getOrders()
   }
 
   // update order
-  @Patch('orders')
+  @Patch('orders/:id')
   @Roles('admin')
   @UseGuards(AuthGuard('jwt'),RolesGuard)
-  updateOrder(@Request() req, @Body() body:any){
-    const userId = req.user.userId
+  updateOrder(@Param('id') orderId:string, @Body() body:any){
     const updateDto = {
-      ...body,
-      userId: req.user.userId,
+      ...body
     };
-    return this.appService.updateOrder(userId,updateDto)
+    return this.appService.updateOrder(orderId,updateDto)
   }
 
   // delete order
-  @Delete('orders')
+  @Delete('orders/:id')
   @Roles('admin')
   @UseGuards(AuthGuard('jwt'),RolesGuard)
-  deleteOrder(@Request() req){
-    const userId = req.user.userId
-    return this.appService.deleteOrder(userId)
+  deleteOrder(@Param('id') orderId:string, @Body() body:any){
+    return this.appService.deleteOrder(orderId)
   }
 }

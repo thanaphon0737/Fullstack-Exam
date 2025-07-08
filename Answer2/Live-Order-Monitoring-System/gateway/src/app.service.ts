@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
-
+import { FindAllOrdersDto } from './dto/find-all-order.dto';
 @Injectable()
 export class AppService {
   private readonly usersServiceUrl: string;
@@ -50,20 +50,20 @@ export class AppService {
       this.httpService.post(`${this.ordersServiceUrl}/orders`, body),
     ).then(res => res.data);
   }
-  getOrders(query:string|null){
+  getOrders(){
     return lastValueFrom(
-      this.httpService.get(`${this.ordersServiceUrl}/orders?status=${query}`),
+      this.httpService.get(`${this.ordersServiceUrl}/orders`),
     ).then(res => res.data);
   }
-  updateOrder(userId:string,body: any){
+  updateOrder(id:string,body: any){
     return lastValueFrom(
-      this.httpService.patch(`${this.ordersServiceUrl}/orders/${userId}`, body),
+      this.httpService.patch(`${this.ordersServiceUrl}/orders/${id}`, body),
     ).then(res => res.data);
   }
 
-  deleteOrder(userId:string){
+  deleteOrder(id:string){
     return lastValueFrom(
-      this.httpService.delete(`${this.ordersServiceUrl}/orders/${userId}`),
+      this.httpService.delete(`${this.ordersServiceUrl}/orders/${id}`),
     ).then(res => res.data);
   }
   getHello(): string {
