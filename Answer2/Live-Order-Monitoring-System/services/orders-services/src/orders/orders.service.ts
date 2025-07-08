@@ -1,10 +1,12 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { FindAllOrdersDto } from './dto/find-all-order.dto';
 import { Order } from './entities/order.entity';
 import Redis from 'ioredis';
+import { stat } from 'fs';
 
 @Injectable()
 export class OrdersService {
@@ -24,8 +26,12 @@ export class OrdersService {
     return newOrder;
   }
 
-  findAll(): Promise<Order[]> {
-    return this.ordersRepository.find();
+  findAll(query: FindAllOrdersDto): Promise<Order[]> {
+    const {status} = query;
+
+    return this.ordersRepository.find({
+      where: status ? {status} : {}
+    })
   }
 
   async findOne(id: string): Promise<Order> {
@@ -38,6 +44,10 @@ export class OrdersService {
 
   async update(id: string, updateOrderDto: UpdateOrderDto): Promise<Order> {
     // preload for merge old and new data
+
+    // if( order.status === 'completed' || order.status === 'cancelled'){
+    //   throw new BadRequestException(`Cannot update order that is already ${order.status}.`)
+    // }
     const orderToUpdate = await this.ordersRepository.preload({
       id: id,
       ...updateOrderDto,
