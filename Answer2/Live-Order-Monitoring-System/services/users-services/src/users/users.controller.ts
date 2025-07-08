@@ -20,7 +20,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('signUp')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -31,7 +31,7 @@ export class UsersController {
     return req.user;
   }
   
-  @Post('login')
+  @Post('signIn')
   @HttpCode(HttpStatus.OK)
   login(@Body() loginDto: CreateUserDto) {
     return this.usersService.login(loginDto);
@@ -43,7 +43,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
