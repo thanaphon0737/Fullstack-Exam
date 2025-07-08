@@ -29,5 +29,17 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - postgres
+  orders-services:
+    build:
+      context: ./services/orders-services
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    command: ["npm", "run", "start:dev"]
+    volumes:
+      - ./services/users-services:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - postgres
 volumes:
   postgres_data:
