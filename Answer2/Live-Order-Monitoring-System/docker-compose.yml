@@ -19,7 +19,7 @@ services:
 
   redis:
     image: redis:alpine
-    container_name: redis_cache
+    container_name: redis
     ports:
       - "6379:6379"
     healthcheck:
@@ -27,6 +27,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    command: ["npm", "run", "start:dev"]
+    volumes:
+      - ./gateway:/usr/src/app
+      - /usr/src/app/node_modules
   users-services:
     build:
       context: ./services/users-services
@@ -38,7 +48,10 @@ services:
       - ./services/users-services:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
   orders-services:
     build:
       context: ./services/orders-services
@@ -47,12 +60,13 @@ services:
       - "3002:3000"
     command: ["npm", "run", "start:dev"]
     volumes:
-      - ./services/users-services:/usr/src/app
+      - ./services/orders-services:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+  
 volumes:
   postgres_data:
