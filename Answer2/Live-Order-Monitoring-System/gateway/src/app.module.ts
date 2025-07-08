@@ -5,6 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { ConfigModule } from '@nestjs/config';
+import { EventsGateway } from './events/events.gateway';
 @Module({
   imports: [
     // for .env and httpservice
@@ -14,6 +15,6 @@ import { ConfigModule } from '@nestjs/config';
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [AppController],
-  providers: [AppService,JwtStrategy],
+  providers: [AppService, JwtStrategy,EventsGateway],
 })
 export class AppModule {}
