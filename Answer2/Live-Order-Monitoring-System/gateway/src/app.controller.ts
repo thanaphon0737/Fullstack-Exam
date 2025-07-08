@@ -34,7 +34,7 @@ export class AppController {
     return { message: 'Login successful' };
   }
 
-  @Post('auth/logout')
+  @Post('auth/signOut')
   logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie('access_token');
     return { message: 'Logout successful' };
