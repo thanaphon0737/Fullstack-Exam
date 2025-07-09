@@ -25,3 +25,7 @@ export const apiCreateOrder = (payload: {details:string,status: string,userId:st
 export const apiGetOrders = () =>{
   return apiClient.get('/orders',{withCredentials:true})
 }
+
+export const apiUpdateOrderStatus = (orderId: string, payload: {status: string}) => {
+  return apiClient.patch(`orders/${orderId}`,payload,{withCredentials:true})
+}
