@@ -41,14 +41,6 @@ function OrderCard({
           >
             {order.status}
           </span>
-          {/* {order.status === "pending" && (
-            <button
-              onClick={() => onAssign(order.id)}
-              className="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75"
-            >
-              Assign
-            </button>
-          )} */}
         </div>
       </div>
       <div className="mt-4 pt-4 border-t border-gray-200">

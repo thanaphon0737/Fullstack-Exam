@@ -53,7 +53,7 @@ function StaffClientPage({ user }: { user: UserPayload }) {
     fetchInitialOrders();
 
     // 2. Establish WebSocket connection.
-    const socket: Socket = io(GATEWAY_URL);
+    const socket = io(GATEWAY_URL);
 
     socket.on('connect', () => {
       console.log('✅ WebSocket Connected');
