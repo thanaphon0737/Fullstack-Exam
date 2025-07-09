@@ -10,11 +10,13 @@ interface Order {
 function OrderCard({
   order,
   onAssign,
-  onCancelButton
+  onCancelButton,
+  onComplete
 }: {
   order: Order;
   onAssign: (id: string) => void;
   onCancelButton: (id: string) => void;
+  onComplete: (id: string) => void;
 }) {
   const statusStyles: { [key in Order["status"]]: string } = {
     pending: "bg-yellow-100 text-yellow-800",
@@ -54,6 +56,14 @@ function OrderCard({
               className="px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
             >
               Cancel
+            </button>
+          )}
+          {(order.status === 'assigned') && (
+             <button
+              onClick={() => onComplete(order.id)}
+              className="px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+            >
+              Complete
             </button>
           )}
         </div>

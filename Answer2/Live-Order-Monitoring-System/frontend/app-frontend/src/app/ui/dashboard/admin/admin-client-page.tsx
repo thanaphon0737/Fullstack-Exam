@@ -123,7 +123,15 @@ function AdminClientPage({ user }: { user: UserPayload }) {
       await apiUpdateOrderStatus(orderId, {status:'cancelled'})
 
     }catch(err){
-      console.error(`Failed to assign order ${orderId}:`, err)
+      console.error(`Failed to cancel order ${orderId}:`, err)
+    }
+  }
+
+  const handleCompleteOrder = async (orderId: string) => {
+    try{
+      await apiUpdateOrderStatus(orderId, {status: 'completed'})
+    }catch(err){
+      console.error(`Failed to complete order ${orderId}:`, err)
     }
   }
 
@@ -169,7 +177,7 @@ function AdminClientPage({ user }: { user: UserPayload }) {
         <div className="space-y-4">
           {filteredOrders.length > 0 ? (
             filteredOrders.map((order) => (
-              <OrderCard key={order.id} order={order} onAssign={handleAssignOrder} onCancelButton={handleCancelOrder} />
+              <OrderCard key={order.id} order={order} onAssign={handleAssignOrder} onCancelButton={handleCancelOrder} onComplete={handleCompleteOrder} />
             ))
           ) : (
             <div className="text-center py-12 bg-white rounded-lg shadow-sm">
