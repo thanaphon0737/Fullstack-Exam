@@ -6,21 +6,35 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { FindAllOrdersDto } from './dto/find-all-order.dto';
 import { Order } from './entities/order.entity';
 import Redis from 'ioredis';
-import { stat } from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OrdersService {
+
+  private readonly redisChannelName: string;
+
   constructor(
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
+    
     @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
-  ) {}
+
+    private readonly configService: ConfigService,
+
+    
+  ) {
+    const channel = this.configService.get<string>('REDIS_CHANNEL_NAME');
+    if (!channel) {
+      throw new Error('REDIS_CHANNEL_NAME is not defined in environment variables');
+    }
+    this.redisChannelName = channel;
+  }
   async create(createOrderDto: CreateOrderDto) {
     console.log(createOrderDto);
     const newOrder = this.ordersRepository.create(createOrderDto);
     await this.ordersRepository.save(newOrder);
     const event = { type: 'CREATE', data: newOrder };
-    this.redisClient.publish('order_events', JSON.stringify(event));
+    this.redisClient.publish(this.redisChannelName, JSON.stringify(event));
     console.log(`Publish new order event to Redis: ${newOrder.id}`);
 
     return newOrder;
@@ -60,7 +74,7 @@ export class OrdersService {
 
     // creat event to update
     const event = { type: 'UPDATE', data: updatedOrder };
-    this.redisClient.publish('order_events', JSON.stringify(event));
+    this.redisClient.publish(this.redisChannelName, JSON.stringify(event));
     console.log(
       `Published UPDATE event to Redis for order: ${updatedOrder.id}`,
     );
@@ -74,7 +88,7 @@ export class OrdersService {
 
     // just send id for frontend
     const event = { type: 'DELETE', data: { id } };
-    this.redisClient.publish('order_events', JSON.stringify(event));
+    this.redisClient.publish(this.redisChannelName, JSON.stringify(event));
     console.log(`Published DELETE event to Redis for order: ${id}`);
   }
 }

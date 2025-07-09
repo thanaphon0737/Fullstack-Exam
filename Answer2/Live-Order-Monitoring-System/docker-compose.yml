@@ -4,9 +4,9 @@ services:
     restart: always
     container_name: postgres_db
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: order_system
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
     ports:
       - "5432:5432"
     healthcheck:
@@ -67,6 +67,15 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-  
+  frontend:
+    build:
+      context: ./frontend/app-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
+    env_file:
+      - ./frontend/app-frontend/.env.local
+    depends_on:
+      - gateway
 volumes:
   postgres_data:

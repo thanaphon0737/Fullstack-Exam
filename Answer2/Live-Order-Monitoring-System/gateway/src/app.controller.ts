@@ -1,9 +1,10 @@
-import { Controller, Post, Body, UseGuards, Request, Get, Patch,Query, Delete,Param } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get, Patch,Query, Delete,Param, Res } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AppService } from './app.service';
 import { Roles } from './auth/roles.decorator';
 import { RolesGuard } from './auth/roles.gard';
-import { FindAllOrdersDto } from './dto/find-all-order.dto';
+import { Response } from 'express';
+
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -20,8 +21,23 @@ export class AppController {
   }
 
   @Post('auth/signIn')
-  login(@Body() body: any) {
-    return this.appService.login(body);
+  async login(@Body() body: any, @Res({ passthrough: true }) response: Response) {
+    const { access_token } = await this.appService.login(body);
+
+    response.cookie('access_token', access_token, {
+      httpOnly: true,
+      secure: false, // for dev
+      path: '/',
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+    });
+
+    return { message: 'Login successful' };
+  }
+
+  @Post('auth/signOut')
+  logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('access_token');
+    return { message: 'Logout successful' };
   }
 
   @Get('auth/profile')

@@ -1,5 +1,5 @@
 # to do
-## create orders by customer
-## view orders by staff
-## update delete orders by admin
-## filter by order status
+- [x] create orders by customer
+- [x] view orders by staff
+- [x] update delete orders by admin
+- [x] refactor create order

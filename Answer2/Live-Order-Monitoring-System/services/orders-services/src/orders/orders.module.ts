@@ -11,7 +11,7 @@ import Redis from 'ioredis';
   providers: [OrdersService,
 
     {
-      provide: 'REDIS_CLIENT', // ตั้งชื่อ Provider ของเรา
+      provide: 'REDIS_CLIENT', // provider
       useFactory: (configService: ConfigService) => {
         // 
         return new Redis({
