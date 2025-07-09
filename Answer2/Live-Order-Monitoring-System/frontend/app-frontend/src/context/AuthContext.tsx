@@ -40,7 +40,7 @@ export const AuthProvider = ({
   useEffect(() => {
     refreshSession();
   }, []);
-  const register = async (credentials: { email: string; password: string }) => {
+  const register = async (credentials: { email: string; password: string,role:string }) => {
     // 1. Call the register API.
     const response = await apiRegister(credentials);
 

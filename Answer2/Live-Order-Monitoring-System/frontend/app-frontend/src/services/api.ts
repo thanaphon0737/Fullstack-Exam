@@ -7,7 +7,7 @@ export const apiLogin = (credentials: { email: string; password: string }) => {
   return apiClient.post("/auth/signIn", credentials,{withCredentials:true});
 };
 
-export const apiRegister = (credentials: { email: string; password: string }) => {
+export const apiRegister = (credentials: { email: string; password: string, role:string }) => {
   return apiClient.post("/auth/signUp", credentials,{withCredentials:true});
 };
 export const apiLogout = async () => {

@@ -11,33 +11,42 @@ import {
   Alert,
   CircularProgress,
   Grid,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import Link from "next/link";
-import {useAuth} from '@/context/AuthContext'
-import {useRouter} from 'next/navigation'
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role,setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-    const { register } = useAuth();
-  const handleSubmit = async (e:any) => {
+  const { register } = useAuth();
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      await 
-      register({email,password});
-      router.push('/dashboard')
+      await register({ email, password,role });
+      router.push("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
   };
+  const handleChange = async (e:any) => {
+    setRole(e.target.value)
+  }
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -80,12 +89,32 @@ export default function RegisterForm() {
                     onClick={() => setShowPassword(!showPassword)}
                     edge="end"
                   >
-                    {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
             }}
           />
+
+          <FormControl>
+            <FormLabel id="demo-controlled-radio-buttons-group">
+              Gender
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={role}
+              onChange={handleChange}
+            >
+              <FormControlLabel
+                value="customer"
+                control={<Radio />}
+                label="Customer"
+              />
+              <FormControlLabel value="staff" control={<Radio />} label="Staff" />
+              <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+            </RadioGroup>
+          </FormControl>
           {error && (
             <Alert severity="error" sx={{ mt: 2 }}>
               {error}
@@ -101,7 +130,7 @@ export default function RegisterForm() {
             {loading ? <CircularProgress size={24} /> : "Sign Up"}
           </Button>
           <Grid container justifyContent="flex-end">
-            <Grid >
+            <Grid>
               <Link href="/login">
                 <Button size="small">Already have an account? Sign In</Button>
               </Link>
