@@ -1,5 +1,6 @@
 # For answer 2 Live Order Monitoring System
 ## Setup instructions
+
 ## Architecture diagram
 ![diagram](/Answer2/Live-Order-Monitoring-System/fullstack-diagram.drawio.png)
 ## Service responsibilities
@@ -22,5 +23,6 @@
     - [x] generate token send to gateway
 ## WebSocket use case explanation
 customer create new order -> gateway -> order-service -> save to PostgreSQL, publish to Redis channel -> gateway receive event from Redis -> broadcast new order via Websocket -> Dashboard update without refreshing
+![usecase](/Answer2/Live-Order-Monitoring-System//usecaseSocket.drawio.png)
 ## Postman
 - document [postman document](https://pages.github.com/).
