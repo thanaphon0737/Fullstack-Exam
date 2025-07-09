@@ -3,5 +3,5 @@
 - [x] create user entity
 - [x] users signUp
 - [x] users signIn
-- [x] middle ware auth
-## orders-services
+- [x] generate jwt sending back to gateway
+

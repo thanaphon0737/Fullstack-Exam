@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
-import { FindAllOrdersDto } from './dto/find-all-order.dto';
 @Injectable()
 export class AppService {
   private readonly usersServiceUrl: string;

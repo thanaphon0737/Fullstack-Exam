@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { Roles } from './auth/roles.decorator';
 import { RolesGuard } from './auth/roles.gard';
 import { Response } from 'express';
-import { FindAllOrdersDto } from './dto/find-all-order.dto';
+
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
