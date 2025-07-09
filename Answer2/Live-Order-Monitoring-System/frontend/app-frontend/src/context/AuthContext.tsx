@@ -12,7 +12,7 @@ interface AuthContextType {
   user: UserPayload | null;
   isAuthenticated: boolean;
   login: (credential: {email:string,password:string}) => Promise<void>;
-  register: (credential: {email:string,password:string}) => Promise<void>;
+  register: (credential: {email:string,password:string,role:string}) => Promise<void>;
   logout: () => Promise<void>;
   refreshSession: () => void;
 }

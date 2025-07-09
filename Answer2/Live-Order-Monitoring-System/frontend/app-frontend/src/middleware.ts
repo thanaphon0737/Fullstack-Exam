@@ -8,7 +8,7 @@ const publicRoutes = ['/login', '/register'];
 export function middleware(request: NextRequest) {
   // 1. Get the authentication token cookie from the request.
   const token = request.cookies.get('access_token')?.value;
-
+  console.log(`token from edge : ${token}`)
   // 2. Get the path the user is trying to access.
   const { pathname } = request.nextUrl;
 

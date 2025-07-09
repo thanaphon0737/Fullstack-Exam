@@ -21,7 +21,7 @@ export default function LogoutButton() {
     }
 
     return (
-        <Button variant="outlined" onClick={handleLogout}>
+        <Button size="small" color="secondary" variant="contained" onClick={handleLogout}>
             Logout
         </Button>
     )
