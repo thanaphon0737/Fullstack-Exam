@@ -1,7 +1,8 @@
 "use client";
-import { deleteSession } from "@/lib/session";
+import { deleteSession, getCurrentUser } from "@/lib/session";
 import { apiLogin,apiGetProfile,apiLogout,apiRegister } from "@/services/api";
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useEffect } from "react";
 interface UserPayload {
     sub: string;
     email: string;
@@ -13,18 +14,32 @@ interface AuthContextType {
   login: (credential: {email:string,password:string}) => Promise<void>;
   register: (credential: {email:string,password:string}) => Promise<void>;
   logout: () => Promise<void>;
+  refreshSession: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({
   children,
-  initialUser,
 }: {
   children: ReactNode;
-  initialUser: UserPayload | null;
 }) => {
-  const [user, setUser] = useState<UserPayload | null>(initialUser);
+  const [user, setUser] = useState<UserPayload | null>(null);
+
+  const refreshSession = async () => {
+
+    try {
+      const userData = await getCurrentUser();
+      setUser(userData);
+    } catch (error) {
+      setUser(null);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    refreshSession();
+  }, []);
   const register = async (credentials: { email: string; password: string }) => {
     // 1. Call the register API.
     const response = await apiRegister(credentials);
@@ -64,7 +79,7 @@ export const AuthProvider = ({
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, login, logout,register }}
+      value={{ user, isAuthenticated: !!user, login, logout,register,refreshSession }}
     >
       {children}
     </AuthContext.Provider>

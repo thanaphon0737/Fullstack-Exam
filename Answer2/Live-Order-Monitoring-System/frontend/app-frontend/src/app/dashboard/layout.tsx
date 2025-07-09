@@ -5,7 +5,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-screen">
       <Navbar />
-      <Container maxWidth="md">
+      <Container >
         <div className="flex justify-center py-10">{children}</div>
       </Container>
     </div>

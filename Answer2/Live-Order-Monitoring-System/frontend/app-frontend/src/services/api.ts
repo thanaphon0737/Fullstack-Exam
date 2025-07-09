@@ -21,3 +21,7 @@ export const apiGetProfile = (token:string) => {
 export const apiCreateOrder = (payload: {details:string,status: string,userId:string}) =>{
   return apiClient.post(`/orders`,payload,{withCredentials:true})
 }
+
+export const apiGetOrders = () =>{
+  return apiClient.get('/orders',{withCredentials:true})
+}
