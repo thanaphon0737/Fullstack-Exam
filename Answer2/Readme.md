@@ -22,4 +22,5 @@
     - [x] generate token send to gateway
 ## WebSocket use case explanation
 customer create new order -> gateway -> order-service -> save to PostgreSQL, publish to Redis channel -> gateway receive event from Redis -> broadcast new order via Websocket -> Dashboard update without refreshing
-## Swagger
+## Postman
+- document [postman document](https://pages.github.com/).
