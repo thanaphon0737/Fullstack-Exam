@@ -47,7 +47,7 @@ docker-compose up --build
 customer create new order -> gateway -> order-service -> save to PostgreSQL, publish to Redis channel -> gateway receive event from Redis -> broadcast new order via Websocket -> Dashboard update without refreshing
 ![usecase](/Answer2/Live-Order-Monitoring-System//usecaseSocket.drawio.png)
 ## Postman
-- document [postman document](https://pages.github.com/).
+- document [postman document](https://documenter.getpostman.com/view/7109991/2sB34eJN53).
 ## demo
 - login ![image](https://github.com/user-attachments/assets/35e54181-2272-4cd9-9f29-449c92471976)
 - register ![image](https://github.com/user-attachments/assets/e81969f9-3e17-4aee-88e0-f0617d6cf49e)
