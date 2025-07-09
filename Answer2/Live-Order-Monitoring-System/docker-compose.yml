@@ -73,6 +73,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:3000"
+    env_file:
+      - ./frontend/app-frontend/.env.local
     depends_on:
       - gateway
 volumes:

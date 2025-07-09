@@ -3,6 +3,7 @@ import { deleteSession, getCurrentUser } from "@/lib/session";
 import { apiLogin,apiGetProfile,apiLogout,apiRegister } from "@/services/api";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useEffect } from "react";
+import { useRouter } from 'next/navigation';
 interface UserPayload {
     sub: string;
     email: string;
@@ -25,7 +26,7 @@ export const AuthProvider = ({
   children: ReactNode;
 }) => {
   const [user, setUser] = useState<UserPayload | null>(null);
-
+  const router = useRouter();
   const refreshSession = async () => {
 
     try {
@@ -44,30 +45,28 @@ export const AuthProvider = ({
     // 1. Call the register API.
     const response = await apiRegister(credentials);
 
-    // 2. The response now contains the user data directly.
-    // const newUserProfile = response?.data as {sub:string; email:string; role:string};
-
-    // // 3. Update the client-side state immediately.
-    // setUser(newUserProfile);
   };
   const login = async (credentials: {email: string, password: string}) => {
     try{
 
         const responseLogin = await apiLogin(credentials);
 
+        await refreshSession();
         // Assert the type of responseLogin.data
-        const data = responseLogin.data as { access_token: string };
-        const token = data.access_token;
-        const response = await apiGetProfile(token);
-        const userProfile = response.data as { id: string; email: string; role: string };
-        const userDTO: UserPayload = {
-          sub: userProfile.id,
-          email: userProfile.email,
-          role: userProfile.role
-        }
-        setUser(userDTO)
+        // const data = responseLogin.data as { access_token: string };
+        // const token = data.access_token;
+        // const response = await apiGetProfile(token);
+        // const userProfile = response.data as { id: string; email: string; role: string };
+        // const userDTO: UserPayload = {
+        //   sub: userProfile.id,
+        //   email: userProfile.email,
+        //   role: userProfile.role
+        // }
+        // setUser(userDTO)
+        router.push('/dashboard');
     }catch(err: any){
         console.error(err)
+        throw new Error(err.response?.data?.message || "Login failed");
     }
   };
 

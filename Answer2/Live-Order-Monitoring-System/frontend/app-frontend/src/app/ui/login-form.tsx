@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import {Grid} from "@mui/material";
 import Link from "next/link";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -82,6 +83,7 @@ export default function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             
           />
+          
           {error && (
             <Alert severity="error" sx={{ mt: 2 }}>
               {error}
